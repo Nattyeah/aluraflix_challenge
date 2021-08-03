@@ -11,12 +11,14 @@ public class VideoResponse {
     private String titulo;
     private String descricao;
     private String url;
+    private String categoriaId;
 
     public VideoResponse(Video video) {
         this.id = video.getId();
         this.titulo = video.getTitulo();
         this.descricao = video.getDescricao();
         this.url = video.getUrl();
+        this.categoriaId = video.getCategoriaId();
     }
 
     public String getTitulo() {
@@ -41,6 +43,14 @@ public class VideoResponse {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getCategoriaId() {
+        return categoriaId;
+    }
+
+    public void setCategoriaId(String categoriaId) {
+        this.categoriaId = categoriaId;
     }
 
     public Long getId() {

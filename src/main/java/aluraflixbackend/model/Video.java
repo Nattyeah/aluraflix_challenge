@@ -20,13 +20,16 @@ public class Video {
     @NotEmpty @NotNull
     private String url;
 
+    private String categoriaId;
+
     public Video() { super(); }
 
-    public Video(@NotEmpty @NotNull String titulo, @NotEmpty @NotNull String descricao, @NotEmpty @NotNull String url) {
+    public Video(@NotEmpty @NotNull String titulo, @NotEmpty @NotNull String descricao, @NotEmpty @NotNull String url, String categoriaId) {
         super();
         this.titulo = titulo;
         this.descricao = descricao;
         this.url = url;
+        this.categoriaId = categoriaId;
     }
 
     public Long getId() {
@@ -61,9 +64,18 @@ public class Video {
         this.url = url;
     }
 
+    public String getCategoriaId() {
+        return categoriaId;
+    }
+
+    public void setCategoriaId(String categoriaId) {
+        this.categoriaId = categoriaId;
+    }
+
     public void atualizar(@Valid VideoRequest request) {
         this.titulo = request.getTitulo();
         this.descricao = request.getDescricao();
         this.url = request.getUrl();
+        this.url = request.getCategoriaId();
     }
 }

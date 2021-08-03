@@ -7,25 +7,28 @@ import javax.validation.constraints.NotNull;
 
 public class VideoRequest {
 
-    @NotEmpty
-    @NotNull
+    @NotEmpty(message = "O campo 'titulo' não pode ser vazio.")
+    @NotNull(message = "O campo 'titulo' não pode ser vazio.")
     private String titulo;
-    @NotEmpty
-    @NotNull
+    @NotEmpty(message = "O campo 'descricao' não pode ser vazio.")
+    @NotNull(message = "O campo 'descricao' não pode ser vazio.")
     private String descricao;
-    @NotEmpty
-    @NotNull
+    @NotEmpty(message = "O campo 'url' não pode ser vazio.")
+    @NotNull(message = "O campo 'url' não pode ser vazio.")
     private String url;
 
-    public VideoRequest(@NotEmpty @NotNull String titulo, @NotEmpty @NotNull String descricao, @NotEmpty @NotNull String url) {
+    private String categoriaId;
+
+    public VideoRequest(@NotEmpty @NotNull String titulo, @NotEmpty @NotNull String descricao, @NotEmpty @NotNull String url, String categoriaId) {
         super();
         this.titulo = titulo;
         this.descricao = descricao;
         this.url = url;
+        this.categoriaId = categoriaId;
     }
 
     public Video converter() {
-        return new Video(this.getTitulo(), this.getDescricao(), this.getUrl());
+        return new Video(this.getTitulo(), this.getDescricao(), this.getUrl(), this.getCategoriaId());
     }
 
     public String getTitulo() {
@@ -50,5 +53,13 @@ public class VideoRequest {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getCategoriaId() {
+        return categoriaId;
+    }
+
+    public void setCategoriaId(String categoriaId) {
+        this.categoriaId = categoriaId;
     }
 }

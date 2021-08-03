@@ -1,7 +1,7 @@
 package aluraflixbackend.controller;
 
 import aluraflixbackend.model.Video;
-import aluraflixbackend.repository.AluraflixRepository;
+import aluraflixbackend.repository.VideosRepository;
 import aluraflixbackend.request.VideoRequest;
 import aluraflixbackend.response.VideoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.Optional;
 public class AluraflixController {
 
     @Autowired
-    private AluraflixRepository repository;
+    private VideosRepository repository;
 
     @GetMapping
     public List<VideoResponse> getAll() {

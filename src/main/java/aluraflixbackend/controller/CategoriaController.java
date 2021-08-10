@@ -5,10 +5,12 @@ import aluraflixbackend.repository.CategoriaRepository;
 import aluraflixbackend.request.CategoriaRequest;
 import aluraflixbackend.response.CategoriaResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -41,5 +43,28 @@ public class CategoriaController {
 
         URI uri = builder.path("/categorias/{id}").buildAndExpand(categoria.getId()).toUri();
         return ResponseEntity.created(uri).body(new CategoriaResponse(categoria));
+    }
+
+    @Transactional
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<CategoriaResponse> update(@RequestBody @Valid CategoriaRequest request, @PathVariable Long id) {
+        Optional<Categoria> categoria = repository.findById(id);
+
+        if(categoria.isPresent()){
+            categoria.get().atualizar(request);
+            return ResponseEntity.ok(new CategoriaResponse(categoria.get()));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<CategoriaResponse> delete(@PathVariable Long id) {
+        try {
+            repository.deleteById(id);
+            return ResponseEntity.ok().build();
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

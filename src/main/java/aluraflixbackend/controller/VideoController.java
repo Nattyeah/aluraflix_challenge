@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/videos")
-public class AluraflixController {
+public class VideoController {
 
     @Autowired
     private VideosRepository repository;

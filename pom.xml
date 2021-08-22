@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>br.com.nataly.lima</groupId>
-    <artifactId>backend-alura-challenge</artifactId>
+    <artifactId>my-backend-alura-challenge</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>backend-alura-challenge</name>
+    <name>my-backend-alura-challenge</name>
     <description>Desafio de backend Alura</description>
     <properties>
         <java.version>11</java.version>
@@ -61,6 +61,11 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>2.3.5</version>
         </dependency>
     </dependencies>
 

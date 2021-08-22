@@ -1,8 +1,10 @@
 package aluraflixbackend.response;
 
+import aluraflixbackend.model.Categoria;
 import aluraflixbackend.model.Video;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class VideoResponse {
@@ -11,14 +13,14 @@ public class VideoResponse {
     private String titulo;
     private String descricao;
     private String url;
-    private String categoriaId;
+    private Long categoriaId;
 
     public VideoResponse(Video video) {
         this.id = video.getId();
         this.titulo = video.getTitulo();
         this.descricao = video.getDescricao();
         this.url = video.getUrl();
-        this.categoriaId = video.getCategoriaId();
+        Optional.ofNullable(video.getCategoria()).ifPresentOrElse(v -> this.categoriaId = v.getId(),() -> this.categoriaId = Categoria.CATEGORIA_LIVRE);
     }
 
     public String getTitulo() {
@@ -45,11 +47,11 @@ public class VideoResponse {
         this.url = url;
     }
 
-    public String getCategoriaId() {
+    public Long getCategoriaId() {
         return categoriaId;
     }
 
-    public void setCategoriaId(String categoriaId) {
+    public void setCategoriaId(Long categoriaId) {
         this.categoriaId = categoriaId;
     }
 

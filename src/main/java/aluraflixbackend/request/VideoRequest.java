@@ -1,5 +1,6 @@
 package aluraflixbackend.request;
 
+import aluraflixbackend.model.Categoria;
 import aluraflixbackend.model.Video;
 
 import javax.validation.constraints.NotEmpty;
@@ -17,9 +18,9 @@ public class VideoRequest {
     @NotNull(message = "O campo 'url' não pode ser vazio.")
     private String url;
 
-    private String categoriaId;
+    private Long categoriaId;
 
-    public VideoRequest(@NotEmpty @NotNull String titulo, @NotEmpty @NotNull String descricao, @NotEmpty @NotNull String url, String categoriaId) {
+    public VideoRequest(@NotEmpty @NotNull String titulo, @NotEmpty @NotNull String descricao, @NotEmpty @NotNull String url, Long categoriaId) {
         super();
         this.titulo = titulo;
         this.descricao = descricao;
@@ -28,7 +29,7 @@ public class VideoRequest {
     }
 
     public Video converter() {
-        return new Video(this.getTitulo(), this.getDescricao(), this.getUrl(), this.getCategoriaId());
+        return new Video(this.getTitulo(), this.getDescricao(), this.getUrl(), new Categoria(this.categoriaId));
     }
 
     public String getTitulo() {
@@ -55,11 +56,11 @@ public class VideoRequest {
         this.url = url;
     }
 
-    public String getCategoriaId() {
+    public Long getCategoriaId() {
         return categoriaId;
     }
 
-    public void setCategoriaId(String categoriaId) {
+    public void setCategoriaId(Long categoriaId) {
         this.categoriaId = categoriaId;
     }
 }

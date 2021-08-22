@@ -1,10 +1,6 @@
 package aluraflixbackend.response;
 
-import aluraflixbackend.model.Categoria;
-import aluraflixbackend.model.Video;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CategoriaResponse {
 
@@ -12,12 +8,7 @@ public class CategoriaResponse {
     private String titulo;
     private String cor;
 
-    public CategoriaResponse(Categoria categoria) {
-        this.id = categoria.getId();
-        this.titulo = categoria.getTitulo();
-        this.cor = categoria.getCor();
-
-    }
+    private List<VideoResponse> videos;
 
     public String getTitulo() {
         return titulo;
@@ -39,7 +30,11 @@ public class CategoriaResponse {
         return id;
     }
 
-    public static List<CategoriaResponse> converter(List<Categoria> categorias) {
-        return categorias.stream().map(CategoriaResponse::new).collect(Collectors.toList());
+    public List<VideoResponse> getVideos() {
+        return videos;
+    }
+
+    public void setVideos(List<VideoResponse> videos) {
+        this.videos = videos;
     }
 }

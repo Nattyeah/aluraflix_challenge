@@ -11,25 +11,31 @@ import javax.validation.constraints.NotNull;
 @Table(name = "tb_video")
 public class Video {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty @NotNull
+    @NotEmpty
+    @NotNull
     private String titulo;
-    @NotEmpty @NotNull
+    @NotEmpty
+    @NotNull
     private String descricao;
-    @NotEmpty @NotNull
+    @NotEmpty
+    @NotNull
     private String url;
+    @ManyToOne
+    private Categoria categoria;
 
-    private String categoriaId;
+    public Video() {
+        super();
+    }
 
-    public Video() { super(); }
-
-    public Video(@NotEmpty @NotNull String titulo, @NotEmpty @NotNull String descricao, @NotEmpty @NotNull String url, String categoriaId) {
+    public Video(@NotEmpty @NotNull String titulo, @NotEmpty @NotNull String descricao, @NotEmpty @NotNull String url, Categoria categoria) {
         super();
         this.titulo = titulo;
         this.descricao = descricao;
         this.url = url;
-        this.categoriaId = categoriaId;
+        this.categoria = categoria;
     }
 
     public Long getId() {
@@ -64,18 +70,15 @@ public class Video {
         this.url = url;
     }
 
-    public String getCategoriaId() {
-        return categoriaId;
-    }
-
-    public void setCategoriaId(String categoriaId) {
-        this.categoriaId = categoriaId;
-    }
 
     public void atualizar(@Valid VideoRequest request) {
         this.titulo = request.getTitulo();
         this.descricao = request.getDescricao();
         this.url = request.getUrl();
-        this.url = request.getCategoriaId();
+        this.categoria = new Categoria(request.getCategoriaId());
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
     }
 }

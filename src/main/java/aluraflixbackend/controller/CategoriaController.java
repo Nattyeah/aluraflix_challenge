@@ -1,16 +1,16 @@
 package aluraflixbackend.controller;
 
-import aluraflixbackend.model.Categoria;
-import aluraflixbackend.repository.CategoriaRepository;
 import aluraflixbackend.request.CategoriaRequest;
 import aluraflixbackend.response.CategoriaResponse;
+import aluraflixbackend.response.VideoResponse;
+import aluraflixbackend.service.CategoriaService;
+import aluraflixbackend.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -21,47 +21,46 @@ import java.util.Optional;
 public class CategoriaController {
 
     @Autowired
-    private CategoriaRepository repository;
+    private CategoriaService categoriaService;
+
+    @Autowired
+    private VideoService videoService;
 
     @GetMapping
-    public List<CategoriaResponse> getAll() { return CategoriaResponse.converter(repository.findAll()); }
+    public List<?> getAll(String embed) {
+        return categoriaService.list(embed);
+    }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<CategoriaResponse> getById(@PathVariable Long id) {
-        Optional<Categoria> categoria = repository.findById(id);
-        if(categoria.isPresent()) {
-            return ResponseEntity.ok(new CategoriaResponse(categoria.get()));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        Optional<CategoriaResponse> categoria = categoriaService.detail(id);
+        return categoria.map(c -> ResponseEntity.ok(c)).orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping(path = "/{id}/videos")
+    public List<VideoResponse> getByCategory(@PathVariable Long id) {
+        return videoService.getByCategory(id);
     }
 
     @PostMapping
     public ResponseEntity<CategoriaResponse> create(@RequestBody @Valid CategoriaRequest request, UriComponentsBuilder builder) {
-        Categoria categoria = request.converter();
-        repository.save(categoria);
+        CategoriaResponse categoria = categoriaService.save(request);
 
         URI uri = builder.path("/categorias/{id}").buildAndExpand(categoria.getId()).toUri();
-        return ResponseEntity.created(uri).body(new CategoriaResponse(categoria));
+        return ResponseEntity.created(uri).body(categoria);
     }
 
-    @Transactional
     @PutMapping(path = "/{id}")
     public ResponseEntity<CategoriaResponse> update(@RequestBody @Valid CategoriaRequest request, @PathVariable Long id) {
-        Optional<Categoria> categoria = repository.findById(id);
+        Optional<CategoriaResponse> categoria = categoriaService.update(request, id);
 
-        if(categoria.isPresent()){
-            categoria.get().atualizar(request);
-            return ResponseEntity.ok(new CategoriaResponse(categoria.get()));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return categoria.map(c -> ResponseEntity.ok(c)).orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<CategoriaResponse> delete(@PathVariable Long id) {
         try {
-            repository.deleteById(id);
+            categoriaService.delete(id);
             return ResponseEntity.ok().build();
         } catch (EmptyResultDataAccessException e) {
             return ResponseEntity.notFound().build();

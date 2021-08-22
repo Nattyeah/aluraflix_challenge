@@ -7,10 +7,14 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 @Entity
 @Table(name = "tb_categoria")
 public class Categoria {
+
+    @Transient
+    public static final Long CATEGORIA_LIVRE = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +27,8 @@ public class Categoria {
 
     public Categoria() { super(); }
 
-    public Categoria(@NotEmpty @NotNull String titulo, @NotEmpty @NotNull String cor) {
-        super();
-        this.titulo = titulo;
-        this.cor = cor;
+    public Categoria(Long id) {
+        this.id = Optional.ofNullable(id).orElse(CATEGORIA_LIVRE);
     }
 
     public Long getId() {
